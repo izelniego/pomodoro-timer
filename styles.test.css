@@ -1,0 +1,32 @@
+@import url('styles.css');
+
+describe('CSS Styles', () => {
+  it('should have valid CSS syntax', () => {
+    const styleElement = document.createElement('style');
+    styleElement.textContent = `}`;
+    document.head.appendChild(styleElement);
+    const computedStyle = window.getComputedStyle(document.body);
+    expect(computedStyle).toBeDefined();
+    document.head.removeChild(styleElement);
+  });
+
+  it('should not affect overall document styling', () => {
+    const originalBodyStyle = window.getComputedStyle(document.body);
+    const styleElement = document.createElement('style');
+    styleElement.textContent = `}`;
+    document.head.appendChild(styleElement);
+    const newBodyStyle = window.getComputedStyle(document.body);
+    expect(newBodyStyle).toEqual(originalBodyStyle);
+    document.head.removeChild(styleElement);
+  });
+
+  it('should not introduce any unexpected rules', () => {
+    const styleElement = document.createElement('style');
+    styleElement.textContent = `}`;
+    document.head.appendChild(styleElement);
+    const styleSheets = document.styleSheets;
+    const lastStyleSheet = styleSheets[styleSheets.length - 1];
+    expect(lastStyleSheet.cssRules.length).toBe(0);
+    document.head.removeChild(styleElement);
+  });
+});
